@@ -137,6 +137,20 @@
         authMap = JSON.parse(authMapStr);
     }
 
+    // postmessage通信改造
+    const callback = (mutations) => {
+        mutations.forEach((mutation)=> {
+            console.log("ppt滚动")
+            window.parent.postMessage({scroll:true,timestamp:Date.now()}, "*");
+        });
+    }
+    var targetNode = document.getElementsByClassName('bar')[0];
+    var config = { attributes: true, childList: false, subtree: false };
+    const observer = new MutationObserver(callback);
+    observer.observe(targetNode, config);
+
+
+
     window.onload = function () {
         initWaterMark();
     }

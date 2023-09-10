@@ -39,6 +39,8 @@ public class DownloadUtils {
         try {
             SslUtils.ignoreSsl();
             urlStr = fileAttribute.getUrl().replaceAll("\\+", "%20");
+            // TODO: 久盛
+            // FIXME: 4.3.0（不包含） 以下的版本此处会对urlStr进行解密。如果这边有做解密需要取消，不进行解密
         } catch (Exception e) {
             logger.error("忽略SSL证书异常:", e);
         }

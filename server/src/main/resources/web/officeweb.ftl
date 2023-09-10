@@ -57,13 +57,14 @@
     }
 
 </style>
-<body>
+<#--禁止复制-->
+<body oncopy="return false" oncut="return false;" onselectstart="return false" oncontextmenu="return false">
 <div id="lucky-mask-demo" style="position: absolute;z-index: 1000000;left: 0px;top: 0px;bottom: 0px;right: 0px; background: rgba(255, 255, 255, 0.8); text-align: center;font-size: 40px;align-items:center;justify-content: center;display: none;">加载中</div>
 <p style="text-align:center;">
-<div id="button-area">
-    <label><button onclick="tiaozhuan()">跳转HTML预览</button></label>
-    <button id="confirm-button" onclick="print()">打印</button>
-</div>
+<#--<div id="button-area">-->
+<#--    <label><button onclick="tiaozhuan()">跳转HTML预览</button></label>-->
+<#--    <button id="confirm-button" onclick="print()">打印</button>-->
+<#--</div>-->
 <div id="luckysheet" style="margin:0px;padding:0px;position:absolute;width:100%;left: 0px;top: 20px;bottom: 0px;outline: none;"></div>
 
 <script src="xlsx/luckyexcel.umd.js"></script>
@@ -104,14 +105,14 @@
                     exportXlsx: false, //关闭导出按钮  启用也不能用  等以后看情况而定
                 },
 
-                allowCopy: true, // 是否允许拷贝
-                showtoolbar: true, // 是否显示工具栏
+                allowCopy: false, // 是否允许拷贝
+                showtoolbar: false, // 是否显示工具栏
                 showinfobar: false, // 是否显示顶部信息栏
                 // myFolderUrl: "/",//作用：左上角<返回按钮的链接
                 showsheetbar: true, // 是否显示底部sheet页按钮
                 showstatisticBar: true, // 是否显示底部计数栏
                 sheetBottomConfig: true, // sheet页下方的添加行按钮和回到顶部按钮配置
-                allowEdit: true, // 是否允许前台编辑
+                allowEdit: false, // 是否允许前台编辑
                 enableAddRow: false, // 允许增加行
                 enableAddCol: false, // 允许增加列
                 userInfo: false, // 右上角的用户信息展示样式
@@ -139,6 +140,27 @@
         document.querySelector('#print-html').innerHTML = html;
         document.querySelector('#print-area').style.display = 'block';
         document.querySelector('#button-area').style.display = 'none';
+    }
+
+    window.onload = function(){
+        console.log("页面加载完成");
+        window.parent.postMessage({scroll:true,timestamp:Date.now()}, "*");
+        setTimeout(function (){
+            // console.log(document.getElementById("luckysheet-sheettable_0"))
+            // let canvas = document.getElementById("luckysheet-sheettable_0");
+            // canvas.onmousemove=function (){
+            //     console.log("html页面鼠标移动")
+            //     window.parent.postMessage({scroll:true,timestamp:Date.now()}, "*");
+            // }
+
+            console.log(document.getElementById("luckysheet-scrollbar-y"))
+            let scroll = document.getElementById("luckysheet-scrollbar-y");
+            scroll.onscroll=function (){
+                console.log("canvas页面滚动")
+                window.parent.postMessage({scroll:true,timestamp:Date.now()}, "*");
+            }
+
+        }, 5000)
     }
 </script>
 </body>

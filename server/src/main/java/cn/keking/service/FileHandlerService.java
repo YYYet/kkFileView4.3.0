@@ -36,6 +36,7 @@ import org.springframework.util.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -412,7 +413,13 @@ public class FileHandlerService implements InitializingBean {
         String suffix;
         FileType type;
         String fileName;
+
+
         String fullFileName = WebUtils.getUrlParameterReg(url, "fullfilename");
+        // FIXME: 避免文件名中有文字被转义 先解密url
+        // TODO: 久盛
+        fullFileName = URLDecoder.decode(fullFileName);
+//        String fullFileName = WebUtils.getUrlParameterReg(url, "fullfilename");
         if (StringUtils.hasText(fullFileName)) {
             fileName = fullFileName;
             type = FileType.typeFromFileName(fullFileName);

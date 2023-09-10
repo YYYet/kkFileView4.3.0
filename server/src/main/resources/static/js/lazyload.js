@@ -48,6 +48,9 @@ function throttle(fn) {
     var timer = null;
     var previous = null;
     return function () {
+        // TODO: PPT 滑动通信
+        console.log("officePic滚动")
+        window.parent.postMessage({scroll:true,timestamp:Date.now()}, "*");
         var now = new Date();
         var context = this;
         var args = arguments;

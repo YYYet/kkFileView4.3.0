@@ -25,6 +25,16 @@
         var fm = document.getElementsByTagName("iframe")[0];
         fm.height = window.document.documentElement.clientHeight - 10;
     }
+
+
+    /**
+     * html页面滚动
+     */
+    document.getElementsByTagName("iframe")[0].contentWindow.addEventListener("scroll", function () {
+        console.log("html页面滚动")
+        window.parent.postMessage({scroll:true,timestamp:Date.now()}, "*");
+    })
+
     /*初始化水印*/
     window.onload = function () {
         initWaterMark();
