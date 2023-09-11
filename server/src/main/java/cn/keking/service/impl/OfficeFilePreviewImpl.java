@@ -13,6 +13,8 @@ import cn.keking.web.filter.BaseUrlFilter;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.poi.EncryptedDocumentException;
 import org.jodconverter.core.office.OfficeException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -27,7 +29,7 @@ import java.util.List;
  */
 @Service
 public class OfficeFilePreviewImpl implements FilePreview {
-
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     public static final String OFFICE_PREVIEW_TYPE_IMAGE = "image";
     public static final String OFFICE_PREVIEW_TYPE_ALL_IMAGES = "allImages";
     private static final String FILE_DIR = ConfigConstants.getFileDir();
@@ -50,13 +52,17 @@ public class OfficeFilePreviewImpl implements FilePreview {
         String baseUrl = BaseUrlFilter.getBaseUrl();
         String suffix = fileAttribute.getSuffix();
         String fileName = fileAttribute.getName();
+        logger.info("fileName "+fileName);
         String filePassword = fileAttribute.getFilePassword();
         boolean forceUpdatedCache=fileAttribute.forceUpdatedCache();
         String userToken = fileAttribute.getUserToken();
         boolean isHtml = suffix.equalsIgnoreCase("xls") || suffix.equalsIgnoreCase("xlsx") || suffix.equalsIgnoreCase("csv") || suffix.equalsIgnoreCase("xlsm") || suffix.equalsIgnoreCase("xlt") || suffix.equalsIgnoreCase("xltm") || suffix.equalsIgnoreCase("et") || suffix.equalsIgnoreCase("ett") || suffix.equalsIgnoreCase("xlam");
         String pdfName = fileName.substring(0, fileName.lastIndexOf(".") ) + suffix +"." +(isHtml ? "html" : "pdf"); //生成文件添加类型后缀 防止同名文件
+        logger.info("pdfName "+pdfName);
         String cacheFileName = userToken == null ? pdfName : userToken + "_" + pdfName;
+        logger.info("cacheFileName "+cacheFileName);
         String outFilePath = FILE_DIR + cacheFileName;
+        logger.info("outFilePath "+outFilePath);
         if (!officePreviewType.equalsIgnoreCase("html")) {
             if (ConfigConstants.getOfficeTypeWeb() .equalsIgnoreCase("web")) {
                 if (suffix.equalsIgnoreCase("xlsx")) {
@@ -137,7 +143,8 @@ public class OfficeFilePreviewImpl implements FilePreview {
         if (!isHtml && baseUrl != null && (OFFICE_PREVIEW_TYPE_IMAGE.equals(officePreviewType) || OFFICE_PREVIEW_TYPE_ALL_IMAGES.equals(officePreviewType))) {
             return getPreviewType(model, fileAttribute, officePreviewType, baseUrl, cacheFileName, outFilePath, fileHandlerService, OFFICE_PREVIEW_TYPE_IMAGE, otherFilePreview);
         }
-        cacheFileName =   URLEncoder.encode(cacheFileName).replaceAll("\\+", "%20");
+        cacheFileName = URLEncoder.encode(cacheFileName).replaceAll("\\+", "%20");
+        logger.info("cacheFileName "+cacheFileName);
         model.addAttribute("pdfUrl", cacheFileName);
         return isHtml ? EXEL_FILE_PREVIEW_PAGE : PDF_FILE_PREVIEW_PAGE;
     }
