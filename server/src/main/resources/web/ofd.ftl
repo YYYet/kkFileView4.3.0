@@ -20,7 +20,7 @@
     var url = '${finalUrl}';
     var baseUrl = '${baseUrl}'.endsWith('/') ? '${baseUrl}' : '${baseUrl}' + '/';
     if (!url.startsWith(baseUrl)) {
-        url = baseUrl + 'getCorsFile?urlPath=' + encodeURIComponent(Base64.encode(url));
+        // url = baseUrl + 'getCorsFile?urlPath=' + encodeURIComponent(Base64.encode(url));
     }
      if(IsPhone()){
    	document.getElementsByTagName('iframe')[0].src = "${baseUrl}ofd/index.html?file=" + encodeURIComponent(url)+"&scale=width";

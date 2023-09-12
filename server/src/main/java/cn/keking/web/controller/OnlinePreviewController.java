@@ -110,7 +110,7 @@ public class OnlinePreviewController {
         logger.info("into getCorsFile");
         try {
             logger.info("urlPath init "+urlPath);
-            urlPath = URLDecoder.decode(urlPath);
+//            urlPath = URLDecoder.decode(urlPath);
             logger.info("urlPath before "+urlPath);
             urlPath = WebUtils.decodeUrl(urlPath);
             logger.info("urlPath after "+urlPath);
